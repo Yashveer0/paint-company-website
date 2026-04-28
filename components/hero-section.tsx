@@ -1,110 +1,177 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Navigation, Pagination, EffectFade } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/effect-fade'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
+const heroSlides = [
+  {
+    id: 1,
+    title: 'Residential Excellence',
+    subtitle: 'Transform your home with premium interior and exterior painting',
+    bgColor: 'from-blue-600 to-blue-400',
+    image: 'linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(59, 130, 246, 0.9))',
+  },
+  {
+    id: 2,
+    title: 'Commercial Perfection',
+    subtitle: 'Professional painting solutions for businesses and enterprises',
+    bgColor: 'from-purple-600 to-purple-400',
+    image: 'linear-gradient(135deg, rgba(126, 34, 206, 0.9), rgba(147, 51, 234, 0.9))',
+  },
+  {
+    id: 3,
+    title: 'Creative Color Consultation',
+    subtitle: 'Expert advice to choose the perfect colors for any space',
+    bgColor: 'from-orange-600 to-orange-400',
+    image: 'linear-gradient(135deg, rgba(194, 65, 12, 0.9), rgba(234, 88, 12, 0.9))',
+  },
+]
 
 export function HeroSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  }
-
   return (
-    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-background relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-10 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="text-center max-w-3xl mx-auto"
-        >
-          {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-6">
-            <div className="inline-block px-4 py-2 bg-secondary/20 border border-secondary rounded-full">
-              <p className="text-sm font-medium text-secondary">Your Trusted Paint Experts Since 2010</p>
-            </div>
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 text-balance"
-          >
-            Professional{' '}
-            <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-              Paint Solutions
-            </span>
-            {' '}for Every Space
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            variants={itemVariants}
-            className="text-lg sm:text-xl text-foreground/70 mb-8 text-pretty leading-relaxed"
-          >
-            Transform your home or business with premium paints and expert craftsmanship. From residential walls to commercial projects, we deliver exceptional results that last.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors inline-flex items-center justify-center gap-2 group"
+    <section className="relative w-full overflow-hidden pt-20">
+      <Swiper
+        modules={[Autoplay, Navigation, Pagination, EffectFade]}
+        effect="fade"
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        navigation
+        loop
+        className="w-full h-[600px] md:h-[700px]"
+      >
+        {heroSlides.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <div
+              className="relative w-full h-full flex items-center justify-center"
+              style={{ background: slide.image }}
             >
-              Get Free Quote
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/gallery"
-              className="px-8 py-4 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
-            >
-              View Gallery
-            </Link>
-          </motion.div>
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-black/25" />
 
-          {/* Stats */}
-          <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-3 gap-8 mt-16 pt-16 border-t border-border"
-          >
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">500+</div>
-              <p className="text-sm text-foreground/60">Projects Completed</p>
+              {/* Content */}
+              <motion.div
+                className="relative z-10 max-w-3xl mx-auto px-4 text-center text-white"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <motion.h1
+                  className="text-5xl md:text-7xl font-bold mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  {slide.title}
+                </motion.h1>
+
+                <motion.p
+                  className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-white/90"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  {slide.subtitle}
+                </motion.p>
+
+                <motion.div
+                  className="flex flex-col md:flex-row gap-4 justify-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  <Link
+                    href="/contact"
+                    className="px-8 py-4 bg-white text-foreground rounded-lg font-semibold hover:bg-white/90 transition-all hover:scale-105"
+                  >
+                    Get Free Quote
+                  </Link>
+                  <Link
+                    href="/gallery"
+                    className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-all"
+                  >
+                    View Our Work
+                  </Link>
+                </motion.div>
+              </motion.div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-accent mb-2">98%</div>
-              <p className="text-sm text-foreground/60">Client Satisfaction</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-secondary mb-2">15+</div>
-              <p className="text-sm text-foreground/60">Years Experience</p>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* Stats Section */}
+      <motion.div
+        className="relative z-20 bg-background -mt-20 pt-20 pb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { number: '500+', label: 'Projects Completed' },
+              { number: '98%', label: 'Client Satisfaction' },
+              { number: '15+', label: 'Years Experience' },
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                className="text-center p-6 bg-card rounded-lg border border-border hover:border-primary/50 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-sm md:text-base text-foreground/70">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Custom Swiper Styles */}
+      <style>{`
+        .swiper-pagination-bullet {
+          background: white;
+          opacity: 0.6;
+        }
+        .swiper-pagination-bullet-active {
+          background: white;
+          opacity: 1;
+        }
+        .swiper-button-next,
+        .swiper-button-prev {
+          color: white;
+          background: rgba(255, 255, 255, 0.2);
+          width: 50px;
+          height: 50px;
+          border-radius: 8px;
+          margin: 0 20px;
+          transition: all 0.3s ease;
+        }
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+          font-size: 20px;
+        }
+      `}</style>
     </section>
   )
 }
