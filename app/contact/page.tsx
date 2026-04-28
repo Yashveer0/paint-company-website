@@ -1,10 +1,14 @@
 'use client'
 
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Clock } from 'lucide-react'
+import { CheckCircle2, Clock, Mail, MapPin, Phone, Send } from 'lucide-react'
 import { useState } from 'react'
+
+import { Footer } from '@/components/footer'
+import { Navbar } from '@/components/navbar'
+import { PageIntro } from '@/components/page-intro'
+import { paintImages } from '@/lib/paint-assets'
 
 const contactInfo = [
   {
@@ -21,13 +25,13 @@ const contactInfo = [
   },
   {
     icon: MapPin,
-    label: 'Address',
+    label: 'Studio',
     value: '123 Paint Street, Design City, DC 12345',
   },
   {
     icon: Clock,
     label: 'Hours',
-    value: 'Mon - Fri: 8:00 AM - 6:00 PM, Sat: 9:00 AM - 4:00 PM',
+    value: 'Mon-Fri 8:00 AM-6:00 PM, Sat 9:00 AM-4:00 PM',
   },
 ]
 
@@ -41,16 +45,17 @@ export default function Contact() {
   })
   const [submitted, setSubmitted] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would send the form data to your backend
-    console.log('Form submitted:', formData)
     setSubmitted(true)
+
     setTimeout(() => {
       setSubmitted(false)
       setFormData({ name: '', email: '', phone: '', projectType: '', message: '' })
@@ -58,51 +63,76 @@ export default function Contact() {
   }
 
   return (
-    <main>
+    <main className="overflow-hidden bg-background">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-background">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-4 text-balance">
-            Get In Touch
-          </h1>
-          <p className="text-xl text-foreground/60 max-w-2xl mx-auto text-pretty">
-            Have a project in mind? We&apos;d love to hear from you. Reach out today for a free quote.
-          </p>
-        </div>
-      </section>
+      <PageIntro
+        eyebrow="Contact"
+        title="Tell us what your space needs next."
+        description="Share a few project details and we will help you shape a clear paint plan, timeline, and quote."
+        image={paintImages.paintBrushes}
+      />
 
-      {/* Contact Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Contact Info */}
-          <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold text-foreground mb-8">Contact Information</h2>
-            <div className="space-y-6">
+      <section className="bg-[#fffdf8] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.4fr]">
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: '-100px' }}
+              className="relative aspect-[4/3] overflow-hidden rounded-lg paint-shadow"
+            >
+              <Image
+                src={paintImages.rollerTray}
+                alt="Paint roller and tray prepared for a project"
+                fill
+                sizes="(min-width: 1024px) 36vw, 100vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 text-white">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-secondary">
+                  Project clarity
+                </p>
+                <p className="mt-2 text-sm leading-6 text-white/80">
+                  The best quote starts with the right details: surfaces, timeline, color goals, and finish needs.
+                </p>
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
               {contactInfo.map((info, index) => {
                 const Icon = info.icon
+
                 return (
                   <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -10 }}
+                    key={info.label}
+                    initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex gap-4"
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                    viewport={{ once: true, margin: '-100px' }}
+                    className="rounded-lg border border-white/80 bg-white/90 p-5 shadow-[0_18px_50px_-42px_rgba(15,23,42,0.55)]"
                   >
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-foreground/60 mb-1">{info.label}</p>
-                      {info.href ? (
-                        <a href={info.href} className="font-semibold text-foreground hover:text-primary transition-colors">
-                          {info.value}
-                        </a>
-                      ) : (
-                        <p className="font-semibold text-foreground">{info.value}</p>
-                      )}
+                    <div className="flex gap-4">
+                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                          {info.label}
+                        </p>
+                        {info.href ? (
+                          <a
+                            href={info.href}
+                            className="font-semibold leading-6 text-foreground transition-colors hover:text-primary"
+                          >
+                            {info.value}
+                          </a>
+                        ) : (
+                          <p className="font-semibold leading-6 text-foreground">{info.value}</p>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 )
@@ -110,37 +140,42 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2 bg-card border border-border rounded-xl p-8"
+            transition={{ duration: 0.65, ease: 'easeOut' }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="rounded-lg border border-white/80 bg-white/90 p-6 shadow-[0_24px_80px_-50px_rgba(15,23,42,0.65)] sm:p-8"
           >
-            <h2 className="text-2xl font-bold text-foreground mb-6">Send us a Message</h2>
-            
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-accent">
+              Free estimate
+            </p>
+            <h2 className="text-3xl font-bold text-foreground">Send us a message</h2>
+            <p className="mt-3 text-pretty leading-7 text-muted-foreground">
+              A project manager will review your details and follow up with next steps.
+            </p>
+
             {submitted ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex items-center justify-center py-12"
+                className="mt-8 flex min-h-[420px] items-center justify-center rounded-lg border border-primary/15 bg-primary/5"
               >
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                <div className="max-w-sm text-center">
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">Message Sent!</h3>
-                  <p className="text-foreground/60">Thank you for reaching out. We&apos;ll be in touch soon.</p>
+                  <h3 className="text-2xl font-semibold text-foreground">Message sent</h3>
+                  <p className="mt-3 leading-7 text-muted-foreground">
+                    Thank you for reaching out. We will be in touch soon with a clear next step.
+                  </p>
                 </div>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="name" className="mb-2 block text-sm font-semibold text-foreground">
                       Full Name
                     </label>
                     <input
@@ -150,12 +185,12 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                      className="h-12 w-full rounded-lg border border-border bg-background px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
                       placeholder="John Doe"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="email" className="mb-2 block text-sm font-semibold text-foreground">
                       Email Address
                     </label>
                     <input
@@ -165,49 +200,51 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                      className="h-12 w-full rounded-lg border border-border bg-background px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
                       placeholder="john@example.com"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                    placeholder="+1 (555) 000-0000"
-                  />
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-foreground">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="h-12 w-full rounded-lg border border-border bg-background px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="projectType" className="mb-2 block text-sm font-semibold text-foreground">
+                      Project Type
+                    </label>
+                    <select
+                      id="projectType"
+                      name="projectType"
+                      value={formData.projectType}
+                      onChange={handleChange}
+                      required
+                      className="h-12 w-full rounded-lg border border-border bg-background px-4 text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    >
+                      <option value="">Select a project type</option>
+                      <option value="residential">Residential Painting</option>
+                      <option value="commercial">Commercial Painting</option>
+                      <option value="consultation">Color Consultation</option>
+                      <option value="coatings">Protective Coatings</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label htmlFor="projectType" className="block text-sm font-medium text-foreground mb-2">
-                    Project Type
-                  </label>
-                  <select
-                    id="projectType"
-                    name="projectType"
-                    value={formData.projectType}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                  >
-                    <option value="">Select a project type</option>
-                    <option value="residential">Residential Painting</option>
-                    <option value="commercial">Commercial Painting</option>
-                    <option value="consultation">Color Consultation</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="message" className="mb-2 block text-sm font-semibold text-foreground">
                     Message
                   </label>
                   <textarea
@@ -216,17 +253,18 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
-                    className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none"
-                    placeholder="Tell us about your project..."
+                    rows={6}
+                    className="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-foreground transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    placeholder="Tell us about your space, timeline, and color goals..."
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_18px_34px_-22px_rgba(37,99,235,0.9)]"
                 >
                   Send Message
+                  <Send className="h-4 w-4" />
                 </button>
               </form>
             )}

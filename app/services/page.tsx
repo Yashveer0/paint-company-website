@@ -1,111 +1,198 @@
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
-import { CTASection } from '@/components/cta-section'
+'use client'
+
+import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check, Layers, ShieldCheck, Sparkles } from 'lucide-react'
+
+import { CTASection } from '@/components/cta-section'
+import { Footer } from '@/components/footer'
+import { Navbar } from '@/components/navbar'
+import { PageIntro } from '@/components/page-intro'
+import { paintImages } from '@/lib/paint-assets'
 
 const serviceDetails = [
   {
     title: 'Residential Painting',
-    description: 'Transform your home with our professional residential painting services. From fresh interior walls to stunning exterior finishes, we bring expertise and attention to detail to every project.',
+    description:
+      'A refined painting process for bedrooms, kitchens, living spaces, exteriors, cabinets, and accent walls.',
+    image: paintImages.interior,
     features: [
-      'Interior wall painting',
-      'Exterior house painting',
+      'Interior and exterior painting',
       'Cabinet refinishing',
       'Accent wall design',
-      'Texture application',
-      'Epoxy flooring',
+      'Trim, doors, and detail work',
+      'Low-odor finish options',
+      'Clean masking and daily reset',
     ],
   },
   {
     title: 'Commercial Painting',
-    description: 'Keep your business looking professional with our comprehensive commercial painting solutions. We work efficiently to minimize disruption to your operations.',
+    description:
+      'Durable, professional finishes delivered around business hours, access needs, and brand standards.',
+    image: paintImages.exteriorPainter,
     features: [
-      'Office space painting',
-      'Retail store refreshes',
-      'Warehouse coating',
-      'Industrial painting',
-      'High-rise exterior work',
-      'Emergency repairs',
+      'Office and retail refreshes',
+      'Hospitality and common areas',
+      'Warehouse and utility spaces',
+      'After-hours scheduling',
+      'Brand color matching',
+      'Phased project planning',
     ],
   },
   {
     title: 'Color Consultation',
-    description: 'Unsure about color choices? Our expert color consultants will guide you through the selection process to find the perfect palette for your space.',
+    description:
+      'Palette support that considers light, furnishings, mood, maintenance needs, and the flow between rooms.',
+    image: paintImages.paintBrushes,
     features: [
       'Color psychology guidance',
-      'Trend analysis',
-      'Virtual room visualization',
-      'Sample preparation',
-      'Lighting assessment',
-      'Brand color matching',
+      'Swatch and sample planning',
+      'Finish recommendations',
+      'Room-to-room palette mapping',
+      'Exterior color coordination',
+      'Trend-aware neutral palettes',
     ],
   },
   {
     title: 'Surface Preparation',
-    description: 'Quality painting starts with proper preparation. We invest time in thorough surface preparation to ensure flawless, long-lasting results.',
+    description:
+      'The quiet work that makes a finish last: repair, sanding, caulking, priming, masking, and protection.',
+    image: paintImages.rollerCloseup,
     features: [
-      'Pressure washing',
-      'Sanding & scraping',
-      'Caulking & repair',
-      'Primer application',
       'Drywall patching',
-      'Metal preparation',
+      'Sanding and scraping',
+      'Caulking and gap repair',
+      'Primer selection',
+      'Surface protection',
+      'Final cleanup walkthrough',
     ],
+  },
+]
+
+const paintSystems = [
+  {
+    icon: Layers,
+    title: 'Interior Washable Finish',
+    description: 'Smooth, low-sheen systems for busy rooms that need color depth and easy maintenance.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Exterior Weather Coat',
+    description: 'UV-aware, moisture-resistant coatings selected for siding, trim, doors, and masonry.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Specialty Texture & Accent',
+    description: 'Statement finishes, accent treatments, and texture refinements for memorable focal areas.',
   },
 ]
 
 export default function Services() {
   return (
-    <main>
+    <main className="overflow-hidden bg-background">
       <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-background">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-4 text-balance">
-            Our Services
-          </h1>
-          <p className="text-xl text-foreground/60 max-w-2xl mx-auto text-pretty">
-            Comprehensive painting and coating solutions tailored to your needs
-          </p>
-        </div>
-      </section>
 
-      {/* Services Details */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-6xl mx-auto space-y-20">
+      <PageIntro
+        eyebrow="Services"
+        title="Professional paint services with premium materials and precise process."
+        description="Choose a service path, then let our crew handle the prep, color, finish, and clean execution."
+        image={paintImages.paintStrokes}
+      />
+
+      <section className="bg-[#fffdf8] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-20">
           {serviceDetails.map((service, index) => (
-            <div
-              key={index}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+            <motion.article
+              key={service.title}
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: 'easeOut' }}
+              viewport={{ once: true, margin: '-100px' }}
+              className={`grid grid-cols-1 items-center gap-10 lg:grid-cols-2 ${
                 index % 2 === 1 ? 'lg:grid-flow-dense' : ''
               }`}
             >
               <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
-                <h2 className="text-4xl font-bold text-foreground mb-4">
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-accent">
+                  {String(index + 1).padStart(2, '0')}
+                </p>
+                <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">
                   {service.title}
                 </h2>
-                <p className="text-lg text-foreground/60 mb-8 text-pretty leading-relaxed">
+                <p className="mt-5 text-pretty text-lg leading-8 text-muted-foreground">
                   {service.description}
                 </p>
-                <div className="space-y-3">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-foreground">{feature}</span>
+                <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {service.features.map((feature) => (
+                    <div
+                      key={feature}
+                      className="flex items-center gap-3 rounded-lg border border-border bg-white/80 px-4 py-3"
+                    >
+                      <Check className="h-5 w-5 flex-shrink-0 text-primary" />
+                      <span className="text-sm font-medium text-foreground">{feature}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className={`bg-gradient-to-br ${
-                index === 0 ? 'from-primary/20 to-accent/20' :
-                index === 1 ? 'from-accent/20 to-secondary/20' :
-                index === 2 ? 'from-secondary/20 to-primary/20' :
-                'from-primary/20 to-secondary/20'
-              } rounded-xl aspect-square ${index % 2 === 1 ? 'lg:col-start-1' : ''}`} />
-            </div>
+
+              <div
+                className={`relative aspect-[4/3] overflow-hidden rounded-lg paint-shadow ${
+                  index % 2 === 1 ? 'lg:col-start-1' : ''
+                }`}
+              >
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 to-transparent" />
+              </div>
+            </motion.article>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-[#f7f6ed] px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="mx-auto mb-14 max-w-3xl text-center"
+          >
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Paint systems
+            </p>
+            <h2 className="text-balance text-4xl font-bold text-foreground sm:text-5xl">
+              Finishes selected for how the space lives
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {paintSystems.map((system, index) => {
+              const Icon = system.icon
+
+              return (
+                <motion.article
+                  key={system.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  className="rounded-lg border border-white/80 bg-white/90 p-7 shadow-[0_20px_58px_-46px_rgba(15,23,42,0.55)] transition-all hover:-translate-y-1 hover:border-primary/25"
+                >
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/35 text-foreground">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">{system.title}</h3>
+                  <p className="mt-3 leading-7 text-muted-foreground">{system.description}</p>
+                </motion.article>
+              )
+            })}
+          </div>
         </div>
       </section>
 

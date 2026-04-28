@@ -1,33 +1,40 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+
+import { paintImages } from '@/lib/paint-assets'
 
 const projects = [
   {
     id: 1,
-    title: 'Modern Residential Makeover',
+    title: 'Soft Neutral Living Room',
     category: 'Residential',
-    image: 'linear-gradient(135deg, from-[#667eea] to-[#764ba2])',
+    image: paintImages.interior,
+    summary: 'A calmer wall palette with crisp trim and a washable finish.',
   },
   {
     id: 2,
-    title: 'Corporate Office Refresh',
+    title: 'High-Performance Workspace',
     category: 'Commercial',
-    image: 'linear-gradient(135deg, from-[#f093fb] to-[#f5576c])',
+    image: paintImages.rollerTray,
+    summary: 'Fast-turnaround coating for a working office refresh.',
   },
   {
     id: 3,
-    title: 'Retail Store Transformation',
-    category: 'Commercial',
-    image: 'linear-gradient(135deg, from-[#4facfe] to-[#00f2fe])',
+    title: 'Warm Accent Wall',
+    category: 'Residential',
+    image: paintImages.yellowWall,
+    summary: 'Color-blocked warmth with clean roller texture and sharp edges.',
   },
   {
     id: 4,
-    title: 'Heritage Home Restoration',
-    category: 'Residential',
-    image: 'linear-gradient(135deg, from-[#43e97b] to-[#38f9d7])',
+    title: 'Exterior Weather Finish',
+    category: 'Exterior',
+    image: paintImages.exteriorPainter,
+    summary: 'Durable exterior coating selected for sun, rain, and curb appeal.',
   },
 ]
 
@@ -37,95 +44,98 @@ export function FeaturedProjects() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.08,
+        delayChildren: 0.12,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    hidden: { opacity: 0, scale: 0.96, y: 18 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      y: 0,
+      transition: { duration: 0.55, ease: 'easeOut' },
     },
   }
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-accent/10 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <section className="bg-[#f7f6ed] px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="flex justify-between items-end mb-16"
+          className="mb-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
         >
-          <div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
-              Featured Projects
+          <div className="max-w-3xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Recent transformations
+            </p>
+            <h2 className="text-balance text-4xl font-bold text-foreground sm:text-5xl">
+              Finished spaces with depth, texture, and restraint
             </h2>
-            <p className="text-lg text-foreground/60 text-pretty">
-              Showcase of our finest work and successful transformations
+            <p className="mt-5 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+              A quick look at the kind of surfaces, palettes, and detail work we bring into homes and
+              business spaces.
             </p>
           </div>
           <Link
             href="/gallery"
-            className="hidden sm:inline-flex items-center gap-2 text-primary hover:gap-3 transition-all font-medium group"
+            className="hidden items-center gap-2 rounded-lg border border-primary/20 bg-white/75 px-5 py-3 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-white sm:inline-flex"
           >
-            View All
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            View all
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
 
-        {/* Projects Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
           {projects.map((project) => (
-            <motion.div
+            <motion.article
               key={project.id}
               variants={itemVariants}
-              className="group relative overflow-hidden rounded-xl aspect-video bg-muted cursor-pointer"
+              className="group relative aspect-[16/11] overflow-hidden rounded-lg bg-muted paint-shadow"
             >
-              <div
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-                style={{ background: project.image }}
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="text-xs font-semibold text-secondary mb-2 uppercase tracking-wide">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                <div className="mb-3 inline-flex rounded-md bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-secondary backdrop-blur">
                   {project.category}
                 </div>
-                <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                <h3 className="text-2xl font-bold">{project.title}</h3>
+                <p className="mt-2 max-w-xl text-sm leading-6 text-white/80">{project.summary}</p>
               </div>
-            </motion.div>
+            </motion.article>
           ))}
         </motion.div>
 
-        {/* Mobile View All */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="flex justify-center sm:hidden"
+          className="mt-10 flex justify-center sm:hidden"
         >
           <Link
             href="/gallery"
-            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
           >
-            View All Projects
-            <ArrowRight className="w-5 h-5" />
+            View all projects
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>
       </div>
